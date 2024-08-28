@@ -1,0 +1,75 @@
+{
+  "name": "starwars-chat-extension",
+  "version": "1.0.0",
+  "description": "XKE Chat Sample - Chat with star wars characters",
+  "author": "Matt Olson",
+  "engines": {
+    "vscode": "^1.92.0"
+  },
+  "categories": [
+    "AI",
+    "Chat"
+  ],
+  "activationEvents": [],
+  "contributes": {
+    "chatParticipants": [
+      {
+        "id": "chat.yoda",
+        "name": "Yoda",
+        "description": "A wise Jedi Master with great knowledge.",
+        "commands": [
+          {
+            "name": "wisdom",
+            "description": "Yoda shares his wisdom on a topic of your choice."
+          },
+          {
+            "name": "force-ghost",
+            "description": "Yoda can connect you with the spirits of the Jedi past."
+          }
+        ]
+      },
+      {
+        "id": "chat.c3po",
+        "name": "C-3PO",
+        "description": "A protocol droid fluent in over six million forms of communication, but not always the most helpful.",
+        "commands": [
+          {
+            "name": "translate",
+            "description": "C-3PO can translate code into any language."
+          },
+          {
+            "name": "complain",
+            "description": "C-3PO can complain about the state of your code."
+          },
+          {
+            "name": "protocol-optimization",
+            "description": "C-3PO can optimize your code for protocol droid efficiency."
+          }
+        ]
+      },
+      {
+        "id": "chat.r2d2",
+        "name": "R2-D2",
+        "description": "A resourceful astromech droid."
+      }
+    ]
+  },
+  "main": "./out/extension.js",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "lint": "eslint \"src/**/*.ts\"",
+    "watch": "tsc --watch -p ./"
+  },
+  "dependencies": {
+    "@vscode/prompt-tsx": "^0.2.6-alpha"
+  },
+	"devDependencies": {
+		"@types/node": "^22.5.0",
+		"@types/vscode": "^1.92.0",
+		"@typescript-eslint/eslint-plugin": "^8.2.0",
+		"@typescript-eslint/parser": "^8.2.0",
+		"eslint": "^9.9.0",
+		"typescript": "^5.5.4"
+	}
+}
