@@ -49,4 +49,4 @@ async function r2d2Handler(request, context, stream, token) {
     return { metadata: { command: 'r2d2', prompt: request.prompt } };
 }
 ;
-//# sourceMappingURL=r2d2handler.js.map
+//# sourceMappingURL=r2d2Handler.js.map

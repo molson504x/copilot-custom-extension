@@ -19,11 +19,11 @@
         "description": "A wise Jedi Master with great knowledge.",
         "commands": [
           {
-            "name": "wisdom",
-            "description": "Yoda shares his wisdom on a topic of your choice."
+            "name": "force-wisdom",
+            "description": "Yoda shares his wisdom on a random topic."
           },
           {
-            "name": "force-ghost",
+            "name": "force-meld",
             "description": "Yoda can connect you with the spirits of the Jedi past."
           }
         ]

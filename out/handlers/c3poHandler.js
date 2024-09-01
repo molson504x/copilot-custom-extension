@@ -23,20 +23,22 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activate = activate;
-exports.deactivate = deactivate;
+exports.c3poHandler = c3poHandler;
 const vscode = __importStar(require("vscode"));
-const r2d2Handler_1 = require("./handlers/r2d2Handler");
-const constants_1 = require("./constants");
-const yodaHandler_1 = require("./handlers/yodaHandler");
-const c3poHandler_1 = require("./handlers/c3poHandler");
-function activate(context) {
-    const r2d2 = vscode.chat.createChatParticipant(constants_1.R2D2_PARTICIPANT_ID, r2d2Handler_1.r2d2Handler);
-    r2d2.iconPath = vscode.Uri.joinPath(context.extensionUri, 'assets', 'r2d2.jpeg');
-    const yoda = vscode.chat.createChatParticipant(constants_1.YODA_PARTICIPANT_ID, yodaHandler_1.yodaHandler);
-    yoda.iconPath = vscode.Uri.joinPath(context.extensionUri, 'assets', 'yoda.jpeg');
-    const c3po = vscode.chat.createChatParticipant(constants_1.C3PO_PARTICIPANT_ID, c3poHandler_1.c3poHandler);
-    c3po.iconPath = vscode.Uri.joinPath(context.extensionUri, 'assets', 'c3po.jpeg');
+const handleError_1 = require("../handleError");
+const logger_1 = require("../logger");
+const constants_1 = require("../constants");
+async function c3poHandler(request, context, stream, token) {
+    stream.progress('Oh my! I do hope I can be of some assistance.');
+    try {
+        const [model] = await vscode.lm.selectChatModels(constants_1.MODEL_SELECTOR);
+        if (model) {
+        }
+    }
+    catch (error) {
+        (0, handleError_1.handleError)(logger_1.logger, error, stream);
+    }
+    logger_1.logger.logUsage('request', { kind: 'c3po', prompt: request.prompt });
+    return { metadata: { command: request.command || 'c3po', prompt: request.prompt } };
 }
-function deactivate() { }
-//# sourceMappingURL=extension.js.map
+//# sourceMappingURL=c3poHandler.js.map
