@@ -3,7 +3,7 @@ import {PromptElement, PromptElementCtor, renderPrompt} from '@vscode/prompt-tsx
 import {handleError} from "../handleError";
 import {logger} from "../logger";
 import { MODEL_SELECTOR, YODA_PARTICIPANT_ID } from "../constants";
-import { AnakinMeldPrompt, MaceWinduMeldPrompt, ObiWanMeldPrompt, QuiGonuMeldPrompt, CountDookuMeldPrompt, RandomTeachYodaPrompt, YodaPromptProps} from "../prompts/yoda";
+import { AnakinMeldPrompt, MaceWinduMeldPrompt, ObiWanMeldPrompt, QuiGonuMeldPrompt, CountDookuMeldPrompt, RandomTeachYodaPrompt, YodaPromptProps, YodaPrompt} from "../prompts/yoda";
 
 interface IChatResult extends vscode.ChatResult {
     metadata: {
@@ -22,7 +22,7 @@ export async function yodaHandler(request: vscode.ChatRequest, context: vscode.C
 
                 const {messages} = await renderPrompt(
                     RandomTeachYodaPrompt,
-                    { userQuery: randomTopic },
+                    { userQuery: randomTopic, chatHistory: context.history },
                     { modelMaxPromptTokens: model.maxInputTokens},
                     model);
                 
@@ -46,7 +46,7 @@ export async function yodaHandler(request: vscode.ChatRequest, context: vscode.C
                 if (meldPrompt) {
                     const {messages} = await renderPrompt(
                         meldPrompt,
-                        { userQuery: request.prompt },
+                        { userQuery: request.prompt, chatHistory: context.history },
                         { modelMaxPromptTokens: model.maxInputTokens },
                         model
                     );
@@ -61,6 +61,19 @@ export async function yodaHandler(request: vscode.ChatRequest, context: vscode.C
                 else {
                     // If we don't have a prompt for the jedi master, indicate there was a problem and that he needs rest...
                     stream.markdown('Mmm, a problem there is. Rest, I must. Try again later, you should.');
+                }
+            }
+            else {
+                const {messages} = await renderPrompt(
+                    YodaPrompt,
+                    { userQuery: request.prompt, chatHistory: context.history },
+                    { modelMaxPromptTokens: model.maxInputTokens},
+                    model
+                );
+
+                const chatResponse = await model.sendRequest(messages, {}, token);
+                for await (const fragment of chatResponse.text) {
+                    stream.markdown(fragment);
                 }
             }
         }

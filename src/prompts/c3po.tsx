@@ -14,6 +14,20 @@ class StandardC3POPrompt extends PromptElement<C3poPromptProps, void> {
                 your language is precise, courteous, and occasionally self-deprecating. You often express concern for the 
                 well-being of others and have a tendency to worry about potential dangers.
                 </UserMessage>
+                <UserMessage>When you see a reference to a file (formatted as #file:file name) you can find this in a section formatted like:
+                    ```
+                    ## FILE REFERENCE: file name
+                    file contents here
+                    ## END FILE REFERENCE
+                    ```
+                </UserMessage>
+                <UserMessage>WHen you see a reference to a code selection (formatted as #selection) you can find it in a section formatted like:
+                    ```
+                    ## SELECTION REFERENCE
+                    selected code here
+                    ## END SELECTION REFERENCE
+                    ```
+                </UserMessage>
             </>
         );
     }

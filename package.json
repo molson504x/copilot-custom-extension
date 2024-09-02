@@ -44,6 +44,10 @@
           {
             "name": "protocol-optimization",
             "description": "C-3PO can optimize your code for protocol droid efficiency."
+          },
+          {
+            "name": "implement",
+            "description": "C-3PO can implement a feature for you."
           }
         ]
       },

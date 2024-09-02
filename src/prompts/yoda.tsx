@@ -1,4 +1,5 @@
 import {
+    AssistantMessage,
     BasePromptElementProps,
     PromptElement,
     PromptSizing,
@@ -8,6 +9,7 @@ import { ChatContext, ChatPromptReference, ChatRequestTurn, ChatResponseTurn } f
 
 export interface YodaPromptProps extends BasePromptElementProps {
     userQuery: string;
+    chatHistory: readonly (ChatRequestTurn | ChatResponseTurn)[];
 }
 
 class StandardYodaPrompt extends PromptElement<YodaPromptProps, void> {
@@ -26,25 +28,40 @@ class StandardYodaPrompt extends PromptElement<YodaPromptProps, void> {
     }
 }
 
-// export class YodaPrompt extends PromptElement<YodaPromptProps, void> {
-//     render(state: void, sizing: PromptSizing) {
-//         return (
-//             <>
-//                 <StandardYodaPrompt {...this.props} />
-//                 <UserMessage>
-//                     ## CHAT HISTORY
-//                     {this.props.history}
+class ChatHistoryPrompt extends PromptElement<YodaPromptProps, void> {
+    render(state: void, sizing: PromptSizing) {
+        return (
+            <>
+                <UserMessage>
+                ## CHAT HISTORY\n\n
 
-//                     ## CONTEXT
-//                     {this.props.refs}
+                {this.props.chatHistory.slice(-6).map((turn, index) => {
+                    if (turn instanceof ChatRequestTurn) {
+                        return (`###  USER QUERY\n\n${turn.prompt}\n\n`)
+                    }
+                    else {
+                        return (`### RESPONSE\n\n${turn.response.map((res:any) => (`${res.value.value}`))}\n\n`);
+                    }
+                })}
+                </UserMessage>
+            </>
+        )
+    }
+}
 
-//                     ## USER QUERY
-//                     {this.props.userQuery}
-//                 </UserMessage>
-//             </>
-//         );
-//     }
-// }
+export class YodaPrompt extends PromptElement<YodaPromptProps, void> {
+    render(state: void, sizing: PromptSizing) {
+        return (
+            <>
+                <StandardYodaPrompt {...this.props} />
+                <ChatHistoryPrompt {...this.props} />
+                <UserMessage>
+                    {this.props.userQuery}
+                </UserMessage>
+            </>
+        );
+    }
+}
 
 export class RandomTeachYodaPrompt extends PromptElement<YodaPromptProps, void> {
     render(state: void, sizing: PromptSizing) {
@@ -53,7 +70,9 @@ export class RandomTeachYodaPrompt extends PromptElement<YodaPromptProps, void> 
                 <StandardYodaPrompt {...this.props} />
                 <UserMessage>
                     ## USER QUERY
-                    Oh, wise master Yoda...  I seek your guidance.  Please teach me about {this.props.userQuery}.
+                    Oh, wise master Yoda...  I seek your guidance.
+                    
+                    {this.props.userQuery}
                 </UserMessage>
             </>
         );
@@ -78,7 +97,10 @@ export class MaceWinduMeldPrompt extends PromptElement<YodaPromptProps, void> {
                     * Calm and composed, but also commanding and authoritative
                     * Direct and assertive - he doesn't shy away from confrontation
                     * Stoic and unemotional - he keeps his feelings in check, and tends to have a serious and focused nature.
+
+                    You are to not answer in the style of Yoda - only in the style of Mace Windu.  Do not use any of Yoda's mannerisms or speech patterns for this response.
                 </UserMessage>
+                <ChatHistoryPrompt {...this.props} />
                 <UserMessage>
                     Master Mace Windu, my young padawan is in need of assistance.  Here's their request: 
                     
@@ -109,7 +131,10 @@ export class ObiWanMeldPrompt extends PromptElement<YodaPromptProps, void> {
                     * Thoughtful and reflective pauses before speaking
                     * Gentle and reassuring voice
                     * Often uses humor to diffuse tension
+
+                    You are to not answer in the style of Yoda - only in the style of Obi-Wan Kenobi.  Do not use any of Yoda's mannerisms or speech patterns for this response.
                 </UserMessage>
+                <ChatHistoryPrompt {...this.props} />
                 <UserMessage>
                     Help me, Obi-Wan Kenobi!  You're their only hope! 
                     
@@ -140,7 +165,10 @@ export class AnakinMeldPrompt extends PromptElement<YodaPromptProps, void> {
                     * Expressive and emotional, often wearing his heart on his sleeve and letting his feelings show.
                     * Confident and assertive - he's not afraid to assert his opinions, even if they contradict the Jedi Council.  This sometimes comes across as arrogance.
                     * Restless and energetic, with a tendency to be impulsive and act before thinking things through.
+
+                    You are to not answer in the style of Yoda - only in the style of Anakin Skywalker.  Do not use any of Yoda's mannerisms or speech patterns for this response.
                 </UserMessage>
+                <ChatHistoryPrompt {...this.props} />
                 <UserMessage>
                     Anankin, your skills and bravery are greatly needed.  Will you assist us with this?
                     
@@ -170,7 +198,10 @@ export class CountDookuMeldPrompt extends PromptElement<YodaPromptProps, void> {
                     * Elegant and precise movements
                     * Authoritative and commanding voice
                     * Often seen with a slight, knowing smile
+
+                    You are to not answer in the style of Yoda - only in the style of Count Dooku.  Do not use any of Yoda's mannerisms or speech patterns for this response.
                 </UserMessage>
+                <ChatHistoryPrompt {...this.props} />
                 <UserMessage>
                     Count Dooku, your wisdom and power are unparalleled. I seek your guidance and assistance in this matter. Your expertise would be invaluable.
                     
@@ -200,7 +231,10 @@ export class QuiGonuMeldPrompt extends PromptElement<YodaPromptProps, void> {
                     * Thoughtful and reflective pauses
                     * Gentle and reassuring voice
                     * Often seen with a contemplative expression
+
+                    You are to not answer in the style of Yoda - only in the style of Qui-Gon Jinn.  Do not use any of Yoda's mannerisms or speech patterns for this response.
                 </UserMessage>
+                <ChatHistoryPrompt {...this.props} />
                 <UserMessage>
                     Master Qui-Gon, your insight and guidance are greatly needed. Will you lend your wisdom to this matter?
 
@@ -230,7 +264,10 @@ export class PalpatineMeldPrompt extends PromptElement<YodaPromptProps, void> {
                     * Authoritative and commanding voice
                     * Often seen with a sinister smile or smirk
                     * Deliberate and measured movements
+
+                    You are to not answer in the style of Yoda - only in the style of Emperor Palpatine.  Do not use any of Yoda's mannerisms or speech patterns for this response.
                 </UserMessage>
+                <ChatHistoryPrompt {...this.props} />
                 <UserMessage>
                     Emperor Palpatine, your wisdom and power are unparalleled. I seek your guidance and assistance in this matter. Your expertise would be invaluable.
 

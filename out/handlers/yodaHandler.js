@@ -38,7 +38,7 @@ async function yodaHandler(request, context, stream, token) {
         if (model) {
             if (request.command === 'force-wisdom') {
                 const randomTopic = getRandomTopic(context.history);
-                const { messages } = await (0, prompt_tsx_1.renderPrompt)(yoda_1.RandomTeachYodaPrompt, { userQuery: randomTopic }, { modelMaxPromptTokens: model.maxInputTokens }, model);
+                const { messages } = await (0, prompt_tsx_1.renderPrompt)(yoda_1.RandomTeachYodaPrompt, { userQuery: randomTopic, chatHistory: context.history }, { modelMaxPromptTokens: model.maxInputTokens }, model);
                 const chatResponse = await model.sendRequest(messages, {}, token);
                 for await (const fragment of chatResponse.text) {
                     stream.markdown(fragment);
@@ -53,7 +53,7 @@ async function yodaHandler(request, context, stream, token) {
                 // Pause execution for a few seconds to make it seem like Yoda is thinking...
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 if (meldPrompt) {
-                    const { messages } = await (0, prompt_tsx_1.renderPrompt)(meldPrompt, { userQuery: request.prompt }, { modelMaxPromptTokens: model.maxInputTokens }, model);
+                    const { messages } = await (0, prompt_tsx_1.renderPrompt)(meldPrompt, { userQuery: request.prompt, chatHistory: context.history }, { modelMaxPromptTokens: model.maxInputTokens }, model);
                     const chatResponse = await model.sendRequest(messages, {}, token);
                     stream.markdown(`*${jediMaster} speaks. Listen, you must...*\n\n---\n\n`);
                     for await (const fragment of chatResponse.text) {
@@ -64,6 +64,13 @@ async function yodaHandler(request, context, stream, token) {
                 else {
                     // If we don't have a prompt for the jedi master, indicate there was a problem and that he needs rest...
                     stream.markdown('Mmm, a problem there is. Rest, I must. Try again later, you should.');
+                }
+            }
+            else {
+                const { messages } = await (0, prompt_tsx_1.renderPrompt)(yoda_1.YodaPrompt, { userQuery: request.prompt, chatHistory: context.history }, { modelMaxPromptTokens: model.maxInputTokens }, model);
+                const chatResponse = await model.sendRequest(messages, {}, token);
+                for await (const fragment of chatResponse.text) {
+                    stream.markdown(fragment);
                 }
             }
         }
