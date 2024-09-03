@@ -25,6 +25,10 @@
           {
             "name": "force-meld",
             "description": "Yoda can connect you with the spirits of the Jedi past."
+          },
+          {
+            "name": "alliance-shift",
+            "description": "Yoda can shift your alliance to the light or dark side."
           }
         ]
       },
@@ -48,6 +52,10 @@
           {
             "name": "implement",
             "description": "C-3PO can implement a feature for you."
+          },
+          {
+            "name": "explain",
+            "description": "C-3PO can explain a block of code to you."
           }
         ]
       },

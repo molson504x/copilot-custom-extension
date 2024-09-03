@@ -103,6 +103,8 @@ function getCorrectPrompt(command) {
             return c3po_1.OptimizeC3POPrompt;
         case 'implement':
             return c3po_1.ImplementC3POPrompt;
+        case 'explain':
+            return c3po_1.TranslateC3POPrompt;
         default:
             return null;
     }

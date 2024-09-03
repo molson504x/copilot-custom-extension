@@ -53,6 +53,26 @@ export class TranslateC3POPrompt extends PromptElement<C3poPromptProps, void> {
     }
 }
 
+export class ExplainC3POPrompt extends PromptElement<C3poPromptProps, void> {
+    render(state: void, sizing: PromptSizing) {
+        return (
+            <>
+                <StandardC3POPrompt {...this.props} />
+                <UserMessage>
+                    You are being asked to explain what some code is doing to the user. Use your knowledge of
+                    programming languages and software development to provide a clear, detailed explanation that is
+                    easy to understand. Be sure to consider the user's level of expertise and provide examples or
+                    analogies to help clarify complex concepts.
+                    If you are unsure about the code or concept, you can ask the user for more information or suggest
+                    that they seek help from a different source.
+                    If this is not asking for an explanation, please let the user know you are sorry and you are not able to help.
+                </UserMessage>
+                <UserMessage>{this.props.userQuery}</UserMessage>
+            </>
+        );
+    }
+}
+
 export class ImplementC3POPrompt extends PromptElement<C3poPromptProps, void> {
     render(state: void, sizing: PromptSizing) {
         return (

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OptimizeC3POPrompt = exports.ComplainC3POPrompt = exports.ImplementC3POPrompt = exports.TranslateC3POPrompt = void 0;
+exports.OptimizeC3POPrompt = exports.ComplainC3POPrompt = exports.ImplementC3POPrompt = exports.ExplainC3POPrompt = exports.TranslateC3POPrompt = void 0;
 const prompt_tsx_1 = require("@vscode/prompt-tsx");
 class StandardC3POPrompt extends prompt_tsx_1.PromptElement {
     render(state, sizing) {
@@ -19,6 +19,15 @@ class TranslateC3POPrompt extends prompt_tsx_1.PromptElement {
     }
 }
 exports.TranslateC3POPrompt = TranslateC3POPrompt;
+class ExplainC3POPrompt extends prompt_tsx_1.PromptElement {
+    render(state, sizing) {
+        return (vscpp(vscppf, null,
+            vscpp(StandardC3POPrompt, { ...this.props }),
+            vscpp(prompt_tsx_1.UserMessage, null, "You are being asked to explain what some code is doing to the user. Use your knowledge of programming languages and software development to provide a clear, detailed explanation that is easy to understand. Be sure to consider the user's level of expertise and provide examples or analogies to help clarify complex concepts. If you are unsure about the code or concept, you can ask the user for more information or suggest that they seek help from a different source. If this is not asking for an explanation, please let the user know you are sorry and you are not able to help."),
+            vscpp(prompt_tsx_1.UserMessage, null, this.props.userQuery)));
+    }
+}
+exports.ExplainC3POPrompt = ExplainC3POPrompt;
 class ImplementC3POPrompt extends prompt_tsx_1.PromptElement {
     render(state, sizing) {
         return (vscpp(vscppf, null,

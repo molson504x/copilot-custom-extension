@@ -66,6 +66,14 @@ async function yodaHandler(request, context, stream, token) {
                     stream.markdown('Mmm, a problem there is. Rest, I must. Try again later, you should.');
                 }
             }
+            else if (request.command === 'alliance-shift') {
+                //Add a progress message in the voice of Yoda indicating that he's finding balance between the light and dark side...
+                stream.progress('Determining, I am, the side of the Force you are on...');
+                // Pause execution for a few seconds to make it seem like Yoda is thinking...
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                const darkSide = toggleTheme();
+                stream.markdown(`A shift in the Force, you have made. To the ${darkSide ? "dark" : "light"} side, you now belong.`);
+            }
             else {
                 const { messages } = await (0, prompt_tsx_1.renderPrompt)(yoda_1.YodaPrompt, { userQuery: request.prompt, chatHistory: context.history }, { modelMaxPromptTokens: model.maxInputTokens }, model);
                 const chatResponse = await model.sendRequest(messages, {}, token);
@@ -143,6 +151,19 @@ function getForceMeldJedi() {
     }
     // Return the jedi master and the prompt type
     return [jediMaster, jediMeldPrompt];
+}
+function getTheme(dark) {
+    const workbenchConfig = vscode.workspace.getConfiguration('workbench');
+    const theme = workbenchConfig.get(dark ? 'preferredDarkColorTheme' : 'preferredLightColorTheme');
+    return theme;
+}
+function toggleTheme() {
+    const currentTheme = vscode.workspace.getConfiguration('workbench').get('colorTheme');
+    const isDark = currentTheme === getTheme(true);
+    const setDark = !isDark;
+    const newTheme = getTheme(setDark);
+    vscode.workspace.getConfiguration('workbench').update('colorTheme', newTheme, vscode.ConfigurationTarget.Global);
+    return setDark;
 }
 function deactivate() { }
 //# sourceMappingURL=yodaHandler.js.map

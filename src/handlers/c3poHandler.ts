@@ -97,6 +97,8 @@ function getCorrectPrompt(command: string): PromptElementCtor<C3poPromptProps, v
             return OptimizeC3POPrompt;
         case 'implement':
             return ImplementC3POPrompt;
+        case 'explain':
+            return TranslateC3POPrompt;
         default:
             return null
     }
